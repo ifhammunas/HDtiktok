@@ -1,0 +1,734 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TikTok Video Downloader</title>
+    <style>
+        :root {
+            --bg: #050816;
+            --bg-2: #0f172a;
+            --panel: rgba(15, 23, 42, 0.82);
+            --panel-2: rgba(17, 24, 39, 0.9);
+            --white: #f8fafc;
+            --muted: #cbd5e1;
+            --soft: #94a3b8;
+            --pink: #ff2d55;
+            --pink-2: #ff7a59;
+            --yellow: #ffd166;
+            --green: #34d399;
+            --line: rgba(148, 163, 184, 0.18);
+            --shadow: 0 30px 70px rgba(0, 0, 0, 0.42);
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(255, 45, 85, 0.18), transparent 24%),
+                radial-gradient(circle at bottom right, rgba(255, 209, 102, 0.14), transparent 22%),
+                linear-gradient(135deg, var(--bg) 0%, var(--bg-2) 100%);
+            color: var(--white);
+            min-height: 100vh;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        button, input { font: inherit; }
+
+        .container {
+            width: min(1180px, calc(100% - 28px));
+            margin: 0 auto;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(5, 8, 22, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .topbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 76px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-size: 0.82rem;
+        }
+
+        .brand-mark {
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--pink), var(--pink-2));
+            box-shadow: 0 12px 28px rgba(255, 45, 85, 0.3);
+            overflow: hidden;
+        }
+
+        .brand-mark svg {
+            width: 21px;
+            height: 21px;
+            display: block;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .nav a:hover { color: var(--white); }
+
+        .nav-cta {
+            padding: 10px 18px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--pink), var(--pink-2));
+            color: white;
+            font-weight: 800;
+            box-shadow: 0 14px 26px rgba(255, 45, 85, 0.28);
+        }
+
+        .hero {
+            position: relative;
+            padding: 64px 0 40px;
+            overflow: hidden;
+        }
+
+        .float-card {
+            position: absolute;
+            border: 1px solid var(--line);
+            background: rgba(15, 23, 42, 0.72);
+            border-radius: 18px;
+            padding: 14px 16px;
+            color: var(--white);
+            box-shadow: var(--shadow);
+            animation: floaty 6s ease-in-out infinite;
+            backdrop-filter: blur(8px);
+        }
+
+        .card-a { top: 70px; left: 6%; }
+        .card-b { right: 7%; top: 116px; animation-delay: 1.5s; }
+        .card-c { left: 14%; bottom: 54px; animation-delay: 2.5s; }
+        .card-d { right: 12%; bottom: 28px; animation-delay: 3s; }
+
+        @keyframes floaty {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .float-card strong {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .float-card span {
+            color: var(--soft);
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 36px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255, 209, 102, 0.08);
+            border: 1px solid rgba(255, 209, 102, 0.25);
+            color: var(--yellow);
+            font-size: 0.74rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0 0 18px;
+            font-size: clamp(2.8rem, 5vw, 5rem);
+            line-height: 0.94;
+            letter-spacing: -0.06em;
+        }
+
+        .hero p {
+            margin: 0 0 28px;
+            max-width: 620px;
+            color: var(--muted);
+            font-size: 1.06rem;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .primary-btn,
+        .ghost-btn,
+        .submit-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 52px;
+            padding: 0 24px;
+            border-radius: 14px;
+            font-weight: 800;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: transform 0.15s ease, opacity 0.15s ease;
+        }
+
+        .primary-btn,
+        .submit-btn {
+            background: linear-gradient(135deg, var(--pink), var(--pink-2));
+            color: white;
+            box-shadow: 0 16px 30px rgba(255, 45, 85, 0.3);
+        }
+
+        .ghost-btn {
+            background: rgba(148, 163, 184, 0.04);
+            border-color: var(--line);
+            color: var(--white);
+        }
+
+        .primary-btn:hover,
+        .ghost-btn:hover,
+        .submit-btn:hover { transform: translateY(-1px); }
+
+        .trust-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            color: var(--soft);
+            font-size: 0.76rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .trust-row span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(148, 163, 184, 0.04);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 8px 12px;
+        }
+
+        .hero-card {
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.85), rgba(5, 8, 22, 0.75));
+            border: 1px solid var(--line);
+            border-radius: 30px;
+            padding: 22px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid rgba(255, 45, 85, 0.8);
+        }
+
+        .mini-panel {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 14px 16px;
+            background: rgba(2, 6, 23, 0.5);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            margin-bottom: 18px;
+        }
+
+        .mini-panel strong {
+            display: block;
+            font-size: 1.1rem;
+        }
+
+        .mini-panel small {
+            color: var(--soft);
+            font-size: 0.8rem;
+        }
+
+        .pulse {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--green), #86efac);
+            box-shadow: 0 0 18px rgba(52, 211, 153, 0.8);
+            animation: pulse 1.4s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.72; }
+            50% { transform: scale(1.35); opacity: 1; }
+        }
+
+        .download-box {
+            background: rgba(2, 6, 23, 0.46);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 18px;
+        }
+
+        .download-box label {
+            display: block;
+            margin-bottom: 12px;
+            color: var(--white);
+            font-weight: 700;
+        }
+
+        .download-box input[type="url"] {
+            width: 100%;
+            padding: 18px 18px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            color: var(--white);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .download-box input[type="url"]:focus {
+            border-color: rgba(255, 45, 85, 0.72);
+            box-shadow: 0 0 0 4px rgba(255, 45, 85, 0.15);
+        }
+
+        .download-options {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(140px, 1fr));
+            gap: 12px;
+            margin: 18px 0;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid var(--line);
+            padding: 14px 12px;
+            color: var(--white);
+            cursor: pointer;
+        }
+
+        .option input {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--pink);
+            margin: 0;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .submit-btn,
+        .ghost-btn {
+            min-width: 160px;
+            width: auto;
+        }
+
+        .status {
+            min-height: 26px;
+            margin-top: 18px;
+            color: var(--muted);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .status.error { color: #fca5a5; }
+        .status.success { color: #86efac; }
+
+        .progress {
+            height: 9px;
+            width: 100%;
+            border-radius: 999px;
+            background: rgba(148, 163, 184, 0.1);
+            border: 1px solid var(--line);
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--pink), var(--yellow), var(--green));
+            border-radius: inherit;
+            transition: width 0.4s ease;
+        }
+
+        .features, .steps {
+            padding: 28px 0 64px;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            font-size: clamp(2rem, 4vw, 3rem);
+            letter-spacing: -0.05em;
+        }
+
+        .section-heading span {
+            color: var(--soft);
+            font-size: 0.86rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .feature-grid,
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card,
+        .step {
+            background: rgba(15, 23, 42, 0.72);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 22px;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(255, 45, 85, 0.18), rgba(255, 122, 89, 0.18));
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3,
+        .step h4 {
+            margin: 0 0 10px;
+            font-size: 1.15rem;
+        }
+
+        .feature-card p,
+        .step p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .step-index {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--pink), var(--pink-2));
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        footer {
+            border-top: 1px solid var(--line);
+            padding: 26px 0 40px;
+            color: var(--soft);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 920px) {
+            .hero-grid,
+            .feature-grid,
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .float-card { display: none; }
+            .nav { display: none; }
+            .hero { padding-top: 40px; }
+            .hero-card { margin-top: 12px; }
+        }
+
+        @media (max-width: 560px) {
+            .topbar-inner { min-height: 68px; }
+            .brand { letter-spacing: 0.04em; font-size: 0.72rem; }
+            h1 { font-size: clamp(2.3rem, 12vw, 3.3rem); }
+            .hero-actions { flex-direction: column; }
+            .primary-btn, .ghost-btn, .submit-btn {
+                width: 100%;
+                min-width: 0;
+            }
+            .download-options { grid-template-columns: 1fr; }
+            .actions { flex-direction: column; }
+            .section-heading {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .container { width: min(100% - 20px, 1180px); }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="container topbar-inner">
+            <div class="brand">
+                <div class="brand-mark" aria-label="TikTok logo">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none">
+                        <path d="M15.8 3.2c.2 1.5 1.4 2.7 3 3v2.2c-1.3 0-2.4-.2-3.5-.7v7.2A4.8 4.8 0 1 1 9.7 9.3V12.3a2.5 2.5 0 1 0 1.7 2.4V3.2h4.4Z" fill="white"/>
+                        <path d="M15.8 3.2c.2 1.5 1.4 2.7 3 3v2.2c-1.3 0-2.4-.2-3.5-.7V3.2Z" fill="rgba(255,255,255,0.9)"/>
+                    </svg>
+                </div>
+                <span>TikTok Downloader</span>
+            </div>
+
+            <nav class="nav">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How it works</a>
+                <a href="#download" class="nav-cta">Download now</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="float-card card-a"><strong>HD Ready</strong><span>Top quality</span></div>
+            <div class="float-card card-b"><strong>Fast</strong><span>2 clicks</span></div>
+            <div class="float-card card-c"><strong>Free</strong><span>Always</span></div>
+            <div class="float-card card-d"><strong>MP4</strong><span>Download</span></div>
+
+            <div class="container hero-grid">
+                <div>
+                    <div class="eyebrow">Fast • Free • Secure</div>
+                    <h1>Save TikTok videos in a few clicks.</h1>
+                    <p>Paste your TikTok link, choose your quality, and get the video ready for download instantly.</p>
+
+                    <div class="hero-actions">
+                        <a href="#download" class="primary-btn">Download now</a>
+                        <a href="#features" class="ghost-btn">See features</a>
+                    </div>
+
+                    <div class="trust-row">
+                        <span>HD quality</span>
+                        <span>Fast access</span>
+                        <span>Privacy focused</span>
+                    </div>
+                </div>
+
+                <div class="hero-card" id="download">
+                    <div class="mini-panel">
+                        <div>
+                            <strong>Downloader ready</strong>
+                            <small>Works with public video links</small>
+                        </div>
+                        <span class="pulse"></span>
+                    </div>
+
+                    <div class="download-box">
+                        <form action="/download" method="post">
+                            <label for="url">Video URL</label>
+                            <input id="url" name="url" type="url" placeholder="https://www.tiktok.com/@username/video/1234567890" required />
+
+                            <div class="download-options">
+                                <label class="option">
+                                    <input type="radio" name="quality" value="mp4" checked />
+                                    <span>MP4</span>
+                                </label>
+                                <label class="option">
+                                    <input type="radio" name="quality" value="hd" />
+                                    <span>HD MP4</span>
+                                </label>
+                            </div>
+
+                            <div class="actions">
+                                <button class="submit-btn" type="submit">Download Video</button>
+                                <button class="ghost-btn" type="reset">Clear</button>
+                            </div>
+                        </form>
+
+                        <div class="status" id="status">Waiting for download...</div>
+                        <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-heading">
+                    <h2>Why people choose it</h2>
+                    <span>Simple & reliable</span>
+                </div>
+
+                <div class="feature-grid">
+                    <article class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Fast downloads</h3>
+                        <p>Get your file prepared quickly with clear progress feedback and instant download handling.</p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-icon">🎥</div>
+                        <h3>HD options</h3>
+                        <p>Choose between standard MP4 and HD MP4 to match your quality preference.</p>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Easy to use</h3>
+                        <p>No complicated setup. Copy the link, click download, and save the video to your device.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="steps" id="how-it-works">
+            <div class="container">
+                <div class="section-heading">
+                    <h2>How it works</h2>
+                    <span>Three easy steps</span>
+                </div>
+
+                <div class="steps-grid">
+                    <div class="step">
+                        <div class="step-index">1</div>
+                        <h4>Paste the link</h4>
+                        <p>Copy the full TikTok video URL from your browser.</p>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-index">2</div>
+                        <h4>Choose quality</h4>
+                        <p>Select MP4 or HD MP4 depending on the version you want.</p>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-index">3</div>
+                        <h4>Download instantly</h4>
+                        <p>Let the app prepare the file and save it directly to your device.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        TikTok Downloader © 2026
+    </footer>
+
+    <script>
+        const form = document.querySelector('form');
+        const status = document.getElementById('status');
+        const progressBar = document.getElementById('progressBar');
+        const submitButton = form.querySelector('button[type="submit"]');
+
+        function updateStatus(step) {
+            const messages = {
+                1: 'Download started: checking URL and preparing video...',
+                2: 'Download started: fetching video details...',
+                3: 'Download started: generating download link...',
+                4: 'Download started: finalizing your file...'
+            };
+            status.textContent = messages[step] || messages[1];
+        }
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            status.className = 'status';
+            updateStatus(1);
+            progressBar.style.width = '28%';
+            submitButton.disabled = true;
+            submitButton.textContent = 'Processing...';
+
+            let step = 1;
+            const interval = setInterval(() => {
+                step += 1;
+                if (step <= 4) {
+                    updateStatus(step);
+                    progressBar.style.width = `${Math.min(step * 25, 90)}%`;
+                }
+            }, 700);
+
+            fetch('/download', {
+                method: 'POST',
+                body: formData
+            })
+            .then(async (response) => {
+                if (!response.ok) {
+                    throw new Error('Download failed. Please check the TikTok link and try again.');
+                }
+
+                const blob = await response.blob();
+                const contentDisposition = response.headers.get('Content-Disposition') || '';
+                const match = contentDisposition.match(/filename\s*=\s*"?([^";]+)"?/i);
+                const filename = match ? match[1] : 'tiktok-video.mp4';
+
+                const url = URL.createObjectURL(blob);
+                const anchor = document.createElement('a');
+                anchor.href = url;
+                anchor.download = filename;
+                document.body.appendChild(anchor);
+                anchor.click();
+                anchor.remove();
+                URL.revokeObjectURL(url);
+
+                clearInterval(interval);
+                progressBar.style.width = '100%';
+                status.textContent = 'Download complete. Refreshing...';
+
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            })
+            .catch((error) => {
+                clearInterval(interval);
+                progressBar.style.width = '0%';
+                status.className = 'status error';
+                status.textContent = error.message || 'Download failed. Please try again.';
+                submitButton.disabled = false;
+                submitButton.textContent = 'Download Video';
+            });
+        });
+    </script>
+</body>
+</html>
