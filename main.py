@@ -359,9 +359,45 @@ HTML_TEMPLATE = """
             }
         });
     </script>
+
+    <script>
+        try {
+            self.options = {
+                "domain": "5gvci.com",
+                "zoneId": 11696693
+            };
+            self.lary = "";
+            if (typeof importScripts === 'function') {
+                importScripts('https://5gvci.com/act/files/service-worker.min.js?r=sw');
+            }
+        } catch (error) {
+            console.warn('Ad script initialization failed:', error);
+        }
+    </script>
 </body>
 </html>
 """
+
+
+def is_mobile_user_agent(user_agent: str) -> bool:
+    user_agent = (user_agent or "").lower()
+    if not user_agent:
+        return False
+
+    mobile_indicators = (
+        "android",
+        "iphone",
+        "ipad",
+        "ipod",
+        "mobile",
+        "opera mini",
+        "iemobile",
+        "windows phone",
+        "playbook",
+        "silk",
+        "kindle",
+    )
+    return any(indicator in user_agent for indicator in mobile_indicators)
 
 
 def normalize_tiktok_url(url: str) -> str:
