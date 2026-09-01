@@ -1,5 +1,6 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,8 +22,13 @@
             --shadow: 0 30px 70px rgba(0, 0, 0, 0.42);
         }
 
-        * { box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             margin: 0;
@@ -35,8 +41,15 @@
             min-height: 100vh;
         }
 
-        a { color: inherit; text-decoration: none; }
-        button, input { font: inherit; }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
 
         .container {
             width: min(1180px, calc(100% - 28px));
@@ -94,7 +107,9 @@
             font-size: 0.9rem;
         }
 
-        .nav a:hover { color: var(--white); }
+        .nav a:hover {
+            color: var(--white);
+        }
 
         .nav-cta {
             padding: 10px 18px;
@@ -123,14 +138,39 @@
             backdrop-filter: blur(8px);
         }
 
-        .card-a { top: 70px; left: 6%; }
-        .card-b { right: 7%; top: 116px; animation-delay: 1.5s; }
-        .card-c { left: 14%; bottom: 54px; animation-delay: 2.5s; }
-        .card-d { right: 12%; bottom: 28px; animation-delay: 3s; }
+        .card-a {
+            top: 70px;
+            left: 6%;
+        }
+
+        .card-b {
+            right: 7%;
+            top: 116px;
+            animation-delay: 1.5s;
+        }
+
+        .card-c {
+            left: 14%;
+            bottom: 54px;
+            animation-delay: 2.5s;
+        }
+
+        .card-d {
+            right: 12%;
+            bottom: 28px;
+            animation-delay: 3s;
+        }
 
         @keyframes floaty {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
         }
 
         .float-card strong {
@@ -222,7 +262,9 @@
 
         .primary-btn:hover,
         .ghost-btn:hover,
-        .submit-btn:hover { transform: translateY(-1px); }
+        .submit-btn:hover {
+            transform: translateY(-1px);
+        }
 
         .trust-row {
             display: flex;
@@ -287,8 +329,17 @@
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.72; }
-            50% { transform: scale(1.35); opacity: 1; }
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.72;
+            }
+
+            50% {
+                transform: scale(1.35);
+                opacity: 1;
+            }
         }
 
         .download-box {
@@ -370,8 +421,13 @@
             gap: 9px;
         }
 
-        .status.error { color: #fca5a5; }
-        .status.success { color: #86efac; }
+        .status.error {
+            color: #fca5a5;
+        }
+
+        .status.success {
+            color: #86efac;
+        }
 
         .progress {
             height: 9px;
@@ -391,7 +447,9 @@
             transition: width 0.4s ease;
         }
 
-        .features, .steps {
+        .features,
+        .steps,
+        .smart-links {
             padding: 28px 0 64px;
         }
 
@@ -417,19 +475,21 @@
         }
 
         .feature-grid,
-        .steps-grid {
+        .steps-grid,
+        .smart-links-grid {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 20px;
         }
 
         .feature-card,
-        .step {
+        .step,
+        .smart-link-card {
             background: rgba(15, 23, 42, 0.72);
             border: 1px solid var(--line);
             border-radius: 22px;
             padding: 22px;
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
         }
 
         .feature-icon {
@@ -444,16 +504,37 @@
         }
 
         .feature-card h3,
-        .step h4 {
+        .step h4,
+        .smart-link-card h3 {
             margin: 0 0 10px;
             font-size: 1.15rem;
         }
 
         .feature-card p,
-        .step p {
+        .step p,
+        .smart-link-card p {
             margin: 0;
             color: var(--muted);
             line-height: 1.7;
+        }
+
+        .smart-link-card a {
+            display: inline-flex;
+            margin-top: 18px;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 18px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--pink), var(--pink-2));
+            color: white;
+            text-decoration: none;
+            font-weight: 800;
+            transition: transform 0.15s ease, opacity 0.15s ease;
+        }
+
+        .smart-link-card a:hover {
+            transform: translateY(-1px);
+            opacity: 0.96;
         }
 
         .step-index {
@@ -477,45 +558,86 @@
         }
 
         @media (max-width: 920px) {
+
             .hero-grid,
             .feature-grid,
             .steps-grid {
                 grid-template-columns: 1fr;
             }
 
-            .float-card { display: none; }
-            .nav { display: none; }
-            .hero { padding-top: 40px; }
-            .hero-card { margin-top: 12px; }
+            .float-card {
+                display: none;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 40px;
+            }
+
+            .hero-card {
+                margin-top: 12px;
+            }
         }
 
         @media (max-width: 560px) {
-            .topbar-inner { min-height: 68px; }
-            .brand { letter-spacing: 0.04em; font-size: 0.72rem; }
-            h1 { font-size: clamp(2.3rem, 12vw, 3.3rem); }
-            .hero-actions { flex-direction: column; }
-            .primary-btn, .ghost-btn, .submit-btn {
+            .topbar-inner {
+                min-height: 68px;
+            }
+
+            .brand {
+                letter-spacing: 0.04em;
+                font-size: 0.72rem;
+            }
+
+            h1 {
+                font-size: clamp(2.3rem, 12vw, 3.3rem);
+            }
+
+            .hero-actions {
+                flex-direction: column;
+            }
+
+            .primary-btn,
+            .ghost-btn,
+            .submit-btn {
                 width: 100%;
                 min-width: 0;
             }
-            .download-options { grid-template-columns: 1fr; }
-            .actions { flex-direction: column; }
+
+            .download-options {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
             .section-heading {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            .container { width: min(100% - 20px, 1180px); }
+
+            .container {
+                width: min(100% - 20px, 1180px);
+            }
         }
     </style>
 </head>
+
 <body>
     <header class="topbar">
         <div class="container topbar-inner">
             <div class="brand">
                 <div class="brand-mark" aria-label="TikTok logo">
                     <svg viewBox="0 0 24 24" aria-hidden="true" fill="none">
-                        <path d="M15.8 3.2c.2 1.5 1.4 2.7 3 3v2.2c-1.3 0-2.4-.2-3.5-.7v7.2A4.8 4.8 0 1 1 9.7 9.3V12.3a2.5 2.5 0 1 0 1.7 2.4V3.2h4.4Z" fill="white"/>
-                        <path d="M15.8 3.2c.2 1.5 1.4 2.7 3 3v2.2c-1.3 0-2.4-.2-3.5-.7V3.2Z" fill="rgba(255,255,255,0.9)"/>
+                        <path
+                            d="M15.8 3.2c.2 1.5 1.4 2.7 3 3v2.2c-1.3 0-2.4-.2-3.5-.7v7.2A4.8 4.8 0 1 1 9.7 9.3V12.3a2.5 2.5 0 1 0 1.7 2.4V3.2h4.4Z"
+                            fill="white" />
+                        <path d="M15.8 3.2c.2 1.5 1.4 2.7 3 3v2.2c-1.3 0-2.4-.2-3.5-.7V3.2Z"
+                            fill="rgba(255,255,255,0.9)" />
                     </svg>
                 </div>
                 <span>TikTok Downloader</span>
@@ -566,7 +688,8 @@
                     <div class="download-box">
                         <form action="/download" method="post">
                             <label for="url">Video URL</label>
-                            <input id="url" name="url" type="url" placeholder="https://www.tiktok.com/@username/video/1234567890" required />
+                            <input id="url" name="url" type="url"
+                                placeholder="https://www.tiktok.com/@username/video/1234567890" required />
 
                             <div class="download-options">
                                 <label class="option">
@@ -586,7 +709,9 @@
                         </form>
 
                         <div class="status" id="status">Waiting for download...</div>
-                        <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+                        <div class="progress">
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -603,7 +728,8 @@
                     <article class="feature-card">
                         <div class="feature-icon">⚡</div>
                         <h3>Fast downloads</h3>
-                        <p>Get your file prepared quickly with clear progress feedback and instant download handling.</p>
+                        <p>Get your file prepared quickly with clear progress feedback and instant download handling.
+                        </p>
                     </article>
 
                     <article class="feature-card">
@@ -651,6 +777,38 @@
         </section>
     </main>
 
+    <section class="smart-links">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Sponsored offers</h2>
+                <span>Smart links</span>
+            </div>
+
+            <div class="smart-links-grid">
+                <article class="smart-link-card">
+                    <h3>Offer 1</h3>
+                    <p>Open the first smart link from the provided network.</p>
+                    <a href="https://www.profitableratecpmnetwork.com/fr7tek67?key=f91967c30cf98a1ecff70748e1769e7d"
+                        target="_blank" rel="noopener noreferrer">Open offer</a>
+                </article>
+
+                <article class="smart-link-card">
+                    <h3>Offer 2</h3>
+                    <p>Open the second smart link from the provided network.</p>
+                    <a href="https://www.profitableratecpmnetwork.com/yqbhmv1k?key=3a46f7947e63bdb3c3d33a0414e3d97e"
+                        target="_blank" rel="noopener noreferrer">Open offer</a>
+                </article>
+
+                <article class="smart-link-card">
+                    <h3>Offer 3</h3>
+                    <p>Open the third smart link from the provided network.</p>
+                    <a href="https://www.profitableratecpmnetwork.com/hn5d3xmrv7?key=6673e89c0b6f2a1e7dfb16ba01215814"
+                        target="_blank" rel="noopener noreferrer">Open offer</a>
+                </article>
+            </div>
+        </div>
+    </section>
+
     <footer>
         TikTok Downloader © 2026
     </footer>
@@ -660,6 +818,13 @@
         const status = document.getElementById('status');
         const progressBar = document.getElementById('progressBar');
         const submitButton = form.querySelector('button[type="submit"]');
+
+        function isMobileDevice() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera || '';
+            const hasTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+            const isAppleMobile = /iphone|ipad|ipod/i.test(userAgent) || (hasTouch && navigator.platform === 'MacIntel');
+            return /android|mobile|opera mini|iemobile|windows phone/i.test(userAgent) || isAppleMobile;
+        }
 
         function updateStatus(step) {
             const messages = {
@@ -672,6 +837,20 @@
         }
 
         form.addEventListener('submit', function (event) {
+            if (isMobileDevice()) {
+                event.preventDefault();
+                form.setAttribute('target', '_blank');
+                form.setAttribute('rel', 'noopener noreferrer');
+                status.className = 'status';
+                status.textContent = 'Starting mobile download...';
+                submitButton.disabled = true;
+                submitButton.textContent = 'Opening download...';
+                setTimeout(() => {
+                    form.submit();
+                }, 120);
+                return;
+            }
+
             event.preventDefault();
             const formData = new FormData(form);
             status.className = 'status';
@@ -693,42 +872,58 @@
                 method: 'POST',
                 body: formData
             })
-            .then(async (response) => {
-                if (!response.ok) {
-                    throw new Error('Download failed. Please check the TikTok link and try again.');
-                }
+                .then(async (response) => {
+                    if (!response.ok) {
+                        throw new Error('Download failed. Please check the TikTok link and try again.');
+                    }
 
-                const blob = await response.blob();
-                const contentDisposition = response.headers.get('Content-Disposition') || '';
-                const match = contentDisposition.match(/filename\s*=\s*"?([^";]+)"?/i);
-                const filename = match ? match[1] : 'tiktok-video.mp4';
+                    const blob = await response.blob();
+                    const contentDisposition = response.headers.get('Content-Disposition') || '';
+                    const match = contentDisposition.match(/filename\s*=\s*"?([^";]+)"?/i);
+                    const filename = match ? match[1] : 'tiktok-video.mp4';
 
-                const url = URL.createObjectURL(blob);
-                const anchor = document.createElement('a');
-                anchor.href = url;
-                anchor.download = filename;
-                document.body.appendChild(anchor);
-                anchor.click();
-                anchor.remove();
-                URL.revokeObjectURL(url);
+                    const url = URL.createObjectURL(blob);
+                    const anchor = document.createElement('a');
+                    anchor.href = url;
+                    anchor.download = filename;
+                    document.body.appendChild(anchor);
+                    anchor.click();
+                    anchor.remove();
+                    URL.revokeObjectURL(url);
 
-                clearInterval(interval);
-                progressBar.style.width = '100%';
-                status.textContent = 'Download complete. Refreshing...';
+                    clearInterval(interval);
+                    progressBar.style.width = '100%';
+                    status.textContent = 'Download complete. Refreshing...';
 
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1500);
-            })
-            .catch((error) => {
-                clearInterval(interval);
-                progressBar.style.width = '0%';
-                status.className = 'status error';
-                status.textContent = error.message || 'Download failed. Please try again.';
-                submitButton.disabled = false;
-                submitButton.textContent = 'Download Video';
-            });
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                })
+                .catch((error) => {
+                    clearInterval(interval);
+                    progressBar.style.width = '0%';
+                    status.className = 'status error';
+                    status.textContent = error.message || 'Download failed. Please try again.';
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Download Video';
+                });
         });
     </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(function (registration) {
+                        console.log('Service worker registered successfully:', registration.scope);
+                    })
+                    .catch(function (error) {
+                        console.log('Service worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+
 </body>
+
 </html>
