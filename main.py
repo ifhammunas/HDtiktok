@@ -1,3 +1,4 @@
+import hashlib
 import os
 import re
 import shutil
@@ -410,9 +411,30 @@ def normalize_tiktok_url(url: str) -> str:
 
 
 def extract_tiktok_id(video_url: str) -> Optional[str]:
-    match = re.search(r"/video/(\d+)", video_url)
-    if match:
-        return match.group(1)
+    normalized = normalize_tiktok_url(video_url)
+    if not normalized:
+        return None
+
+    patterns = [
+        r"/video/(\d+)",
+        r"/t/([A-Za-z0-9_-]+)",
+        r"/video/([A-Za-z0-9_-]+)",
+        r"(?:^|[/?#])([A-Za-z0-9_-]{6,})$",
+    ]
+
+    for pattern in patterns:
+        match = re.search(pattern, normalized, re.IGNORECASE)
+        if match:
+            return match.group(1)
+
+    if "vm.tiktok.com" in normalized.lower():
+        match = re.search(r"vm\.tiktok\.com/([A-Za-z0-9]+)", normalized, re.IGNORECASE)
+        if match:
+            return match.group(1)
+
+    if "tiktok.com" in normalized.lower():
+        return hashlib.sha1(normalized.encode("utf-8")).hexdigest()[:12]
+
     return None
 
 
@@ -508,9 +530,12 @@ def _extract_video_url(data: dict, quality: str = "mp4") -> str:
 
 def fetch_tiktok_video(url: str, quality: str = "mp4"):
     normalized_url = normalize_tiktok_url(url)
+    if "tiktok.com" not in normalized_url.lower():
+        raise ValueError("Please enter a valid TikTok video URL.")
+
     video_id = extract_tiktok_id(normalized_url)
     if not video_id:
-        raise ValueError("Please enter a valid TikTok video URL containing a /video/ ID.")
+        raise ValueError("Please enter a valid TikTok video URL.")
 
     session = requests.Session()
     session.headers.update({
